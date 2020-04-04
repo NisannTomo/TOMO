@@ -1,0 +1,55 @@
+#include<cstdio>
+#include<algorithm>
+using namespace std;
+
+int a[110];
+
+int maxsum(int l,int r)
+{
+    if(l==r)
+    {
+        return a[l];
+    }
+    int mid = (l+r)/2;
+    int lsum = maxsum(l,mid);  //左区间
+    int rsum = maxsum(mid+1,r);//右区间
+    int sum1=0,sum2=0;
+    int lefts=0,rights=0;      //跨界求和
+    for(int i=mid; i>=l; i--)
+    {
+        lefts+=a[i];
+        if(lefts>sum1)
+        {
+            sum1=lefts;
+        }
+    }
+    for(int i=mid+1; i<=r; i++)
+    {
+        rights+=a[i];
+        if(rights>sum2)
+        {
+            sum2=rights;
+        }
+    }
+    int msum=sum1+sum2;
+    return max(msum,max(lsum,rsum)); //三者中的最大值
+}
+
+int main()
+{
+    int n;
+    int ans;
+    while(scanf("%d",&n)!=EOF)
+    {
+        for(int i=1; i<=n; i++)
+        {
+           scanf("%d",&a[i]);
+        }
+        ans = maxsum(0,n);
+        if(ans<0)
+        {
+            ans=0;
+        }
+       printf("%d\n",ans);
+    }
+}
